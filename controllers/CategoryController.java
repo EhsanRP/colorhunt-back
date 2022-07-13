@@ -38,7 +38,8 @@ public class CategoryController {
         log.debug("Getting all the categories by approved value {}", approval);
         return categoryService.findByNameAndApproved(categoryName,approval);
     }
-    @PatchMapping("/update")
+
+    @PutMapping("/update")
     public CategoryDTO updateCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         log.debug("Updating category with id {} and name {}", categoryDTO.getId(), categoryDTO.getName());
 
@@ -59,7 +60,7 @@ public class CategoryController {
         categoryService.deleteCategory(Long.valueOf(categoryId));
     }
 
-    @PatchMapping("/approval/{categoryId}")
+    @PutMapping("/approval/{categoryId}")
     public CategoryDTO submitApproval(@PathVariable String categoryId){
         log.debug("Submitting approval status for Category with id {}", categoryId);
 

@@ -4,6 +4,8 @@ import ir.equadesign.colorhunt.controllers.DTO.PaletteDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface PaletteService {
 
     Page<PaletteDTO> findAllPalettesByApproval(Boolean approval, Pageable pageable);
@@ -15,6 +17,8 @@ public interface PaletteService {
     Page<PaletteDTO> findAllPopularPalettes(Pageable pageable);
 
     Page<PaletteDTO> findRandomPalettes(Pageable pageable);
+
+    List<PaletteDTO> findAllPalettesByIdList(List<Long> idList);
 
     PaletteDTO findByID(Long paletteId);
 

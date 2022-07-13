@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Value
@@ -22,9 +23,15 @@ public class PaletteController {
 
     @GetMapping("/all")
     public Page<PaletteDTO> findAllPalettes(@RequestParam int size, @RequestParam int page) {
-        log.debug("Getting All Palettes");
+        log.debug("Getting All Palettes with page number {} and size {}", page, size);
 
         return paletteService.findAllPalettesByApproval(true, PageRequest.of(page, size));
+    }
+
+    @GetMapping("/all/list")
+    public List<PaletteDTO> getAllPalettesByIdList(@RequestBody List<Long> paletteIdList) {
+
+        return paletteService.findAllPalettesByIdList(paletteIdList);
     }
 
     @GetMapping("/all/category/{categoryId}")
@@ -43,14 +50,13 @@ public class PaletteController {
 
     @GetMapping("/popular")
     public Page<PaletteDTO> findAllPopularPalettes(@RequestParam int size, @RequestParam int page) {
-        log.debug("Getting Popular Palettes");
-
+        log.debug("Getting Popular Palettes with page number {} and size {}", page, size);
         return paletteService.findAllPopularPalettes(PageRequest.of(page, size));
     }
 
     @GetMapping("/random")
     public Page<PaletteDTO> findRandomPalettes(@RequestParam int size, @RequestParam int page) {
-        log.debug("Getting Random Palettes");
+        log.debug("Getting Random Palettes with page number {} and size {}", page, size);
 
         return paletteService.findRandomPalettes(PageRequest.of(page, size));
     }
@@ -62,28 +68,28 @@ public class PaletteController {
         return paletteService.findByID(Long.valueOf(paletteId));
     }
 
-    @PatchMapping("/approval/{paletteId}")
+    @PutMapping("/approval/{paletteId}")
     public PaletteDTO submitApproval(@PathVariable String paletteId) {
         log.debug("Submitting Approval For Palette With ID {}", paletteId);
 
         return paletteService.submitApproval(Long.valueOf(paletteId));
     }
 
-    @PatchMapping("/like/{paletteId}")
+    @PutMapping("/like/{paletteId}")
     public void likePalette(@PathVariable String paletteId) {
         log.debug("Liking Palette With ID {}", paletteId);
 
         paletteService.likePalette(Long.valueOf(paletteId));
     }
 
-    @PatchMapping("/dislike/{paletteId}")
+    @PutMapping("/dislike/{paletteId}")
     public void dislikePalette(@PathVariable String paletteId) {
         log.debug("Disliking Palette With ID {}", paletteId);
 
         paletteService.dislikePalette(Long.valueOf(paletteId));
     }
 
-    @PatchMapping("/update")
+    @PutMapping("/update")
     public PaletteDTO updatePalette(@Valid @RequestBody PaletteDTO paletteDTO) {
         log.debug("Updating Palette With ID {}", paletteDTO.getId());
 

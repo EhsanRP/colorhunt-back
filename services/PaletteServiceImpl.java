@@ -14,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Value
 @RequiredArgsConstructor
 @Service
@@ -62,6 +65,14 @@ public class PaletteServiceImpl implements PaletteService {
     }
 
     @Override
+    public List<PaletteDTO> findAllPalettesByIdList(List<Long> idList) {
+        var palettes = paletteRepository.findAllById(idList);
+        var paletteList= new ArrayList<PaletteDTO>();
+        palettes.forEach(palette -> paletteList.add(paletteConverter.dtoMaker(palette)));
+        return paletteList;
+    }
+
+    @Override
     public PaletteDTO findByID(Long paletteId) {
         var palette = paletteValidation.validateID(paletteId);
         return paletteConverter.dtoMaker(palette);
@@ -83,6 +94,7 @@ public class PaletteServiceImpl implements PaletteService {
     @Override
     public PaletteDTO savePalette(PaletteDTO paletteDTO) {
         var newPalette = paletteConverter.entityMaker(paletteDTO);
+        newPalette.setIsApproved(true);
         newPalette = paletteRepository.save(newPalette);
         return paletteConverter.dtoMaker(newPalette);
     }
